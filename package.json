@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win",
+    "build": "vite build",
+    "build:desktop": "electron-builder --win",
     "generate-license": "node generate-license.js",
     "dev": "vite",
     "build-web": "vite build",
