@@ -142,3 +142,5 @@ function AppShell({ initUser }) {
     </div>
   );
 }
+
+export default AppShell;
