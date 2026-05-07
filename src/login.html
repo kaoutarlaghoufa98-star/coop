@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login - Coop Tafernout ERP</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #5C3317 0%, #7A4520 100%);
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .login-container {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+  }
+
+  .logo {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5C3317;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: #7A4520;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.5rem;
+    color: #5C3317;
+    font-weight: 500;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #E8C9A8;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+
+  .input-field:focus {
+    outline: none;
+    border-color: #C9952A;
+  }
+
+  .login-btn, .register-btn {
+    background: linear-gradient(135deg, #C9952A 0%, #7A4520 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .register-btn {
+    background: linear-gradient(135deg, #7A4520 0%, #5C3317 100%);
+  }
+
+  .login-btn:hover:not(:disabled), .register-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(201, 149, 42, 0.3);
+  }
+
+  .login-btn:disabled, .register-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .message {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+
+  .message.success {
+    background: #E8F5E8;
+    color: #2E7D32;
+    border: 1px solid #4CAF50;
+  }
+
+  .message.error {
+    background: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #F44336;
+  }
+
+  .toggle-form {
+    margin-top: 1rem;
+    color: #7A4520;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #E8C9A8;
+    border-radius: 50%;
+    border-top-color: #C9952A;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">🥐</div>
+    <h1 class="title">Coop Tafernout ERP</h1>
+    <p class="subtitle" id="formTitle">Connexion à votre compte</p>
+
+    <div id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="input-field" id="email" placeholder="votre@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" class="input-field" id="password" placeholder="••••••••" required>
+      </div>
+
+      <button class="login-btn" id="loginBtn" onclick="login()">
+        Se connecter
+      </button>
+
+      <div class="toggle-form" onclick="toggleForm()">Pas de compte ? S'inscrire</div>
+    </div>
+
+    <div id="registerForm" style="display: none;">
+      <div class="form-group">
+        <label for="regEmail">Email</label>
+        <input type="email" class="input-field" id="regEmail" placeholder="votre@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regPassword">Mot de passe</label>
+        <input type="password" class="input-field" id="regPassword" placeholder="••••••••" required>
+      </div>
+
+      <div class="form-group">
+        <label for="regConfirmPassword">Confirmer le mot de passe</label>
+        <input type="password" class="input-field" id="regConfirmPassword" placeholder="••••••••" required>
+      </div>
+
+      <button class="register-btn" id="registerBtn" onclick="register()">
+        S'inscrire
+      </button>
+
+      <div class="toggle-form" onclick="toggleForm()">Déjà un compte ? Se connecter</div>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const formTitle = document.getElementById('formTitle');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const messageDiv = document.getElementById('message');
+
+    function toggleForm() {
+      if (loginForm.style.display === 'none') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        formTitle.textContent = 'Connexion à votre compte';
+      } else {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        formTitle.textContent = 'Créer un compte';
+      }
+    }
+
+    async function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        showMessage('Veuillez remplir tous les champs', 'error');
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<span class="loading"></span>Connexion...';
+
+      try {
+        const result = await window.electronAPI.invoke('auth:login', { email, password });
+
+        if (result.success) {
+          showMessage('✅ Connexion réussie ! Ouverture de l\'application...', 'success');
+          // Main window will open automatically
+          setTimeout(() => {
+            window.close();
+          }, 2000);
+        } else {
+          showMessage('❌ ' + result.error, 'error');
+        }
+      } catch (error) {
+        showMessage('❌ Erreur de connexion', 'error');
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = 'Se connecter';
+      }
+    }
+
+    async function register() {
+      const email = document.getElementById('regEmail').value;
+      const password = document.getElementById('regPassword').value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+      if (!email || !password || !confirmPassword) {
+        showMessage('Veuillez remplir tous les champs', 'error');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showMessage('Les mots de passe ne correspondent pas', 'error');
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage('Le mot de passe doit contenir au moins 6 caractères', 'error');
+        return;
+      }
+
+      registerBtn.disabled = true;
+      registerBtn.innerHTML = '<span class="loading"></span>Inscription...';
+
+      try {
+        const result = await window.electronAPI.invoke('auth:register', { email, password });
+
+        if (result.success) {
+          showMessage('✅ Inscription réussie ! Vous pouvez maintenant vous connecter.', 'success');
+          setTimeout(() => {
+            toggleForm();
+          }, 2000);
+        } else {
+          showMessage('❌ ' + result.error, 'error');
+        }
+      } catch (error) {
+        showMessage('❌ Erreur d\'inscription', 'error');
+      } finally {
+        registerBtn.disabled = false;
+        registerBtn.innerHTML = 'S\'inscrire';
+      }
+    }
+
+    function showMessage(text, type) {
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = text;
+    }
+
+    // Auto-focus first field
+    document.getElementById('email').focus();
+  </script>
+</body>
+</html>

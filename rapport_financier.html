@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Rapport Financier — Coop Tafernout ERP</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0 }
+  body { font-family:Georgia,serif; color:#1A0E08; background:#FBF6F1; padding:2rem; max-width:900px; margin:0 auto }
+  h1   { font-size:1.6rem; letter-spacing:2px; text-transform:uppercase; color:#5C3317 }
+  h2   { font-size:1rem; color:#7A4520; margin:1.5rem 0 0.8rem; border-bottom:2px solid #E8C9A8; padding-bottom:6px }
+  .hd  { text-align:center; padding:1.5rem 0; border-bottom:2px solid #C9952A; margin-bottom:1.5rem }
+  .sub { color:#9B7B6A; font-size:0.85rem; margin-top:4px }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1rem 0 }
+  .kpi  { background:white; border-radius:10px; padding:1rem; border-left:4px solid #C9952A; box-shadow:0 1px 4px rgba(0,0,0,.08) }
+  .kpi .label { font-size:0.72rem; color:#9B7B6A; text-transform:uppercase; letter-spacing:.6px }
+  .kpi .value { font-size:1.25rem; font-weight:700; margin:4px 0 2px }
+  .card { background:white; border-radius:10px; padding:1.2rem; margin-bottom:1rem; box-shadow:0 1px 4px rgba(0,0,0,.08) }
+  table { width:100%; border-collapse:collapse; font-size:0.87rem }
+  th,td { padding:8px 10px; border-bottom:1px solid #F0E0CC; text-align:left }
+  th { background:#FBF6F1; font-size:0.72rem; text-transform:uppercase; color:#9B7B6A; letter-spacing:.5px }
+  .ft { margin-top:2rem; text-align:center; font-size:0.75rem; color:#9B7B6A; border-top:1px solid #E8C9A8; padding-top:1rem }
+  @media print { body{ background:white; padding:1rem } }
+</style>
+</head>
+<body>
+
+<div class="hd">
+  <div style="font-size:3rem">🥐</div>
+  <h1>Coop Tafernout ERP</h1>
+  <div class="sub">Rapport Financier — May 2026</div>
+  <div class="sub">Généré le 06/05/2026 à 21:54</div>
+</div>
+
+<h2>📊 Indicateurs clés</h2>
+<div class="grid">
+  <div class="kpi">
+    <div class="label">💰 Ventes totales</div>
+    <div class="value" style="color:#2E7D32">0 MAD</div>
+    <div class="sub">0 transactions</div>
+  </div>
+  <div class="kpi">
+    <div class="label">💸 Charges & Pertes</div>
+    <div class="value" style="color:#C62828">0 MAD</div>
+    <div class="sub">dont 0 MAD pertes</div>
+  </div>
+  <div class="kpi">
+    <div class="label">📈 Bénéfice net</div>
+    <div class="value" style="color:#2E7D32">0 MAD</div>
+    <div class="sub">Marge : 0%</div>
+  </div>
+  <div class="kpi">
+    <div class="label">🧾 Créances clients</div>
+    <div class="value" style="color:#E65100">0 MAD</div>
+    <div class="sub">0 vente(s) impayée(s)</div>
+  </div>
+  <div class="kpi">
+    <div class="label">👥 Masse salariale</div>
+    <div class="value" style="color:#5C3317">0 MAD</div>
+    <div class="sub">Employés actifs</div>
+  </div>
+  <div class="kpi">
+    <div class="label">💹 Résultat net</div>
+    <div class="value" style="color:#2E7D32">
+      0 MAD
+    </div>
+    <div class="sub">Après salaires</div>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem">
+  <div class="card">
+    <h2 style="margin-top:0">🎂 Ventes par catégorie</h2>
+    <table><tbody></tbody></table>
+  </div>
+  <div class="card">
+    <h2 style="margin-top:0">💸 Charges par catégorie</h2>
+    <table><tbody></tbody></table>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem">
+  <div class="card">
+    <h2 style="margin-top:0">🏆 Top 5 produits vendus</h2>
+    <table>
+      <thead><tr><th>#</th><th>Produit</th><th>Qté vendue</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h2 style="margin-top:0">⚠️ Clients débiteurs</h2>
+    <table>
+      <thead><tr><th>Client</th><th>Téléphone</th><th style="text-align:right">Montant dû</th></tr></thead>
+      <tbody><tr><td colspan="3" style="text-align:center;color:green">✅ Aucune créance</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="ft">🎂 Coop Tafernout ERP — Rapport généré automatiquement par l'outil Python</div>
+</body>
+</html>

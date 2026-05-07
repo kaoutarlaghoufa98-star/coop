@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Activation - Coop Tafernout ERP</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/main.css">
+<style>
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #5C3317 0%, #7A4520 100%);
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .activation-container {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+  }
+
+  .logo {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #5C3317;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: #7A4520;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 2rem;
+  }
+
+  .license-input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #E8C9A8;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+    font-family: monospace;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: border-color 0.3s;
+  }
+
+  .license-input:focus {
+    outline: none;
+    border-color: #C9952A;
+  }
+
+  .activate-btn {
+    background: linear-gradient(135deg, #C9952A 0%, #7A4520 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .activate-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(201, 149, 42, 0.3);
+  }
+
+  .activate-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .message {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+
+  .message.success {
+    background: #E8F5E8;
+    color: #2E7D32;
+    border: 1px solid #4CAF50;
+  }
+
+  .message.error {
+    background: #FFEBEE;
+    color: #C62828;
+    border: 1px solid #F44336;
+  }
+
+  .loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #E8C9A8;
+    border-radius: 50%;
+    border-top-color: #C9952A;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .footer {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: #9B7B6A;
+  }
+</style>
+</head>
+<body>
+  <div class="activation-container">
+    <div class="logo">🥐</div>
+    <h1 class="title">Coop Tafernout ERP</h1>
+    <p class="subtitle">Activation de licence requise</p>
+
+    <div class="form-group">
+      <input
+        type="text"
+        class="license-input"
+        id="licenseKey"
+        placeholder="123456"
+        maxlength="6"
+        inputmode="numeric"
+        pattern="\d{6}"
+        autocomplete="off"
+      >
+    </div>
+
+    <button class="activate-btn" id="activateBtn" onclick="activate()">
+      Activer la licence
+    </button>
+
+    <div id="message"></div>
+
+    <div class="footer">
+      <p>Entrez votre code de licence à 6 chiffres pour activer l'application sur cet ordinateur.</p>
+      <p>Format: 123456</p>
+    </div>
+  </div>
+
+  <script>
+    const licenseInput = document.getElementById('licenseKey');
+    const activateBtn = document.getElementById('activateBtn');
+    const messageDiv = document.getElementById('message');
+
+    // Keep only digits so the input matches the expected 6-digit license format.
+    licenseInput.addEventListener('input', function(e) {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6);
+    });
+
+    async function activate() {
+      const licenseKey = licenseInput.value.replace(/\D/g, '');
+
+      if (!licenseKey) {
+        showMessage('Veuillez entrer une clé de licence', 'error');
+        return;
+      }
+
+      if (!licenseKey.match(/^\d{6}$/)) {
+        showMessage('Format de clé invalide. Utilisez 6 chiffres (ex. 123456)', 'error');
+        return;
+      }
+
+      activateBtn.disabled = true;
+      activateBtn.innerHTML = '<span class="loading"></span>Activation en cours...';
+
+      try {
+        const result = await window.electronAPI.activateLicense(licenseKey);
+
+        if (result.success) {
+          showMessage('✅ Activation réussie ! L\'application va s\'ouvrir maintenant.', 'success');
+          activateBtn.disabled = true;
+          licenseInput.disabled = true;
+        } else {
+          showMessage('❌ ' + result.error, 'error');
+        }
+      } catch (error) {
+        showMessage('❌ Erreur lors de l\'activation', 'error');
+      }
+
+      activateBtn.disabled = false;
+      activateBtn.innerHTML = 'Activer la licence';
+    }
+
+    function showMessage(text, type) {
+      messageDiv.innerHTML = `<div class="message ${type}">${text}</div>`;
+    }
+
+    // Enter key support
+    licenseInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        activate();
+      }
+    });
+
+    // Focus on input
+    window.addEventListener('load', () => {
+      licenseInput.focus();
+    });
+  </script>
+</body>
+</html>
