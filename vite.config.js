@@ -6,9 +6,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist-web',
-    rollupOptions: {
-      input: 'src/main.jsx'
-    }
+    emptyOutDir: true
   },
   server: {
     port: 3000
